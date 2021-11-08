@@ -9,6 +9,7 @@ export const EventForm = () => {
 
     useEffect(() => {
         // TODO: Get all existing games from API
+        
     }, [])
 
     const changeEventState = (domEvent) => {
