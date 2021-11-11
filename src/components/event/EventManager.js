@@ -1,11 +1,23 @@
 export const getEvents = () => {
     return fetch("http://localhost:8000/events", {
-        headers:{
+        headers: {
             "Authorization": `Token ${localStorage.getItem("lu_token")}`
         }
     })
         .then(response => response.json())
 }
+
+// export const updateGameFetch = (game) => {
+//     return fetch(`http://localhost:8000/games/${game.id}`, {
+//         method: "PUT",
+//         headers: {
+//             "Authorization": `Token ${localStorage.getItem("lu_token")}`,
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(game)
+//     })
+
+// }
 
 export const createEvent = (newEvent) => {
     return fetch("http://localhost:8000/events", {
@@ -20,9 +32,9 @@ export const createEvent = (newEvent) => {
 }
 
 export const joinEvent = (eventId) => {
-    return fetch(`http://localhost:8000/events/${ eventId }/signup`, {
+    return fetch(`http://localhost:8000/events/${eventId}/signup`, {
         method: "POST",
-        headers:{
+        headers: {
             "Authorization": `Token ${localStorage.getItem("lu_token")}`
         }
     })
@@ -30,9 +42,9 @@ export const joinEvent = (eventId) => {
 }
 
 export const leaveEvent = (eventId) => {
-    return fetch(`http://localhost:8000/events/${ eventId }/signup`, {
+    return fetch(`http://localhost:8000/events/${eventId}/signup`, {
         method: "DELETE",
-        headers:{
+        headers: {
             "Authorization": `Token ${localStorage.getItem("lu_token")}`
         }
     })
