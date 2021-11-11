@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react"
-import { useHistory } from "react-router-dom"
-import { createEvent } from './EventManager.js'
+import { useHistory, useParams } from "react-router-dom"
+import { createEvent, getEvent, updateEventFetch } from './EventManager.js'
 import { getGames } from '../game/GameManager.js'
 
 
 export const EventForm = () => {
     const history = useHistory()
+    const [event, setState] = useState({})
+
+    const { eventId } = useParams()
 
     const [currentEvent, setEvent] = useState({
         gameId: 0,
@@ -19,11 +22,32 @@ export const EventForm = () => {
         getGames().then(data => setGames(data))
     }, [])
 
+    useEffect(() => {
+        if (eventId) {
+            getEvent(eventId).then((eventData) => setState({
+                ...eventData,
+                game: eventData.game,
+                description: eventData.description,
+                date: eventData.date,
+                time: eventData.time
+            }))
+        }
+    }, [eventId])
+
     const handleControlledInputChange = (event) => {
         const newEvent = Object.assign({}, currentEvent)
         newEvent[event.target.name] = event.target.value
         setEvent(newEvent)
     }
+
+    const updateEvent = (event) => {
+        event.preventDefault()
+
+        updateEventFetch(event).then(() => {
+            history.push('/events')
+        })
+    }
+    
 
     return (
         <form className="gameForm">
@@ -64,6 +88,16 @@ export const EventForm = () => {
                     <input name="time" onChange={handleControlledInputChange} type="time" id="time" className="form-control" placeholder="Select a Time" required />
                 </div>
             </fieldset>
+
+            <div>
+                <button onClick={(event) => {
+                    if (eventId) {
+                        updateEvent(event)
+                    } else {
+                        saveEvent(event)
+                    }
+                }}>Save Event </button>
+            </div>
 
             <button type="submit"
                 onClick={evt => {

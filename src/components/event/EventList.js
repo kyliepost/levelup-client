@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react"
-import { useHistory } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import { getEvents, joinEvent, leaveEvent } from "./EventManager.js"
 
 
 export const EventList = () => {
     const history = useHistory()
-    const [ events, assignEvents ] = useState([])
+    const [events, assignEvents] = useState([])
 
     const eventFetcher = () => {
         getEvents()
@@ -38,11 +38,12 @@ export const EventList = () => {
                             event.joined
                                 ? <button className="btn btn-3"
                                     onClick={() => leaveEvent(event.id).then(() => eventFetcher())}
-                                    >Leave</button>
+                                >Leave</button>
                                 : <button className="btn btn-2"
                                     onClick={() => joinEvent(event.id).then(() => eventFetcher())}
-                                    >Join</button>
+                                >Join</button>
                         }
+                        <Link to={`event/edit/${event.id}`}>Edit Event</Link>
                     </section>
                 })
             }
